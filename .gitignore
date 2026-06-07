@@ -33,6 +33,7 @@ usr/plugins/
 usr/themes/*
 !usr/themes/default
 !usr/themes/classic-22
+!usr/themes/facile
 node_modules/
 tools/tmp/
 .vercel
