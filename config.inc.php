@@ -39,6 +39,6 @@ $db->addServer(array (
   'database' => $dbName,
   'engine' => $dbEngine,
   'sslCa' => $dbSslCa,
-  'sslVerify' => true,
+  'sslVerify' => false,
 ), \Typecho\Db::READ | \Typecho\Db::WRITE);
 \Typecho\Db::set($db);
