@@ -35,3 +35,5 @@ usr/themes/*
 !usr/themes/classic-22
 node_modules/
 tools/tmp/
+.vercel
+.env*
