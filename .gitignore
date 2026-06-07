@@ -25,7 +25,7 @@
 .sass-cache
 config.rb
 prepros.config
-config.inc.*
+# config.inc.*
 usr/uploads/
 usr/*.db
 usr/plugins/
