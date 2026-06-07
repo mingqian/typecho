@@ -1,0 +1,31 @@
+# IDE 配置
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+.idea/
+
+# Local History for Visual Studio Code
+.history/
+
+# Claude Code 配置（包含本地路径）
+.claude/
+
+# 开发文档（内部使用）
+Claude/
+
+# 备份文件
+*.backup
+*.bak
+*.old
+
+# 系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 日志文件
+*.log
+logs/

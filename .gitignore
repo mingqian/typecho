@@ -28,12 +28,14 @@ prepros.config
 # config.inc.*
 usr/uploads/
 usr/*.db
-usr/plugins/
+usr/plugins/*
 !usr/plugins/HelloWorld
+!usr/plugins/Icefox
 usr/themes/*
 !usr/themes/default
 !usr/themes/classic-22
 !usr/themes/facile
+!usr/themes/icefox
 node_modules/
 tools/tmp/
 .vercel

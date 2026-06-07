@@ -1,0 +1,206 @@
+# Icefox - Typecho 博客主题
+
+![Version](https://img.shields.io/badge/version-3.0.0-blue)
+![Typecho](https://img.shields.io/badge/typecho-%3E%3D1.2.0-orange)
+![PHP](https://img.shields.io/badge/php-%3E%3D7.0.0-purple)
+
+一个现代化、响应式的 Typecho 博客主题，采用 Bulma 框架和 Alpine.js 构建，提供流畅的用户体验和丰富的交互功能。
+
+## ✨ 核心特性
+
+### 🎨 界面设计
+- **响应式布局** - 基于 Bulma CSS 框架，完美适配各种设备
+- **主题切换** - 支持日间/夜间模式切换
+- **现代化 UI** - 简洁优雅的视觉设计
+- **图片灯箱** - 使用 Fancybox 展示图片
+
+### 🚀 核心功能
+- **点赞系统** - 支持匿名和登录用户点赞
+- **评论系统** - 支持嵌套回复，实时交互
+- **无限滚动** - 自动加载更多文章
+- **音乐卡片** - 内置音乐播放器短代码
+- **内容展开/收起** - 长文章智能折叠
+- **友情链接** - 动态加载友情链接
+
+### 🎮 特色页面
+- **游戏页面** - 内置小游戏功能
+- **归档页面** - 优雅的文章归档展示
+- **编辑页面** - 可视化内容编辑
+
+## 📦 技术栈
+
+### 后端
+- **PHP** >= 7.0.0
+- **Typecho** >= 1.2.0
+- **MySQL/MariaDB**
+
+### 前端
+- **CSS 框架**: Bulma.min.css
+- **JavaScript 库**:
+  - jQuery - DOM 操作
+  - Alpine.js - 响应式状态管理
+  - Axios - HTTP 请求
+  - Fancybox - 图片灯箱
+  - ScrollLoad - 无限滚动
+
+### 字体
+- HarmonyOS Sans
+- DingTalk
+
+## 📥 安装
+
+### 前置要求
+- Typecho >= 1.2.0
+- PHP >= 7.0.0
+- MySQL/MariaDB 数据库
+
+### 安装步骤
+
+1. **下载主题**
+   ```bash
+   cd /path/to/typecho/usr/themes/
+   git clone https://github.com/xiaopanglian/icefox.git
+   ```
+
+2. **安装配套插件**（必需）
+
+   主题依赖 `icefox` 插件提供后端功能，请确保安装并启用插件：
+   ```
+   /path/to/typecho/usr/plugins/icefox/
+   ```
+
+   插件负责：
+   - 创建数据库表（`typecho_icefox_archive`、`typecho_icefox_likes`）
+   - 注册 API 路由（点赞、评论等接口）
+
+3. **启用主题**
+
+   登录 Typecho 后台 → 外观 → 启用 Icefox 主题
+
+4. **配置主题**
+
+   在主题设置页面根据需要调整配置
+
+## 🗂️ 目录结构
+
+```
+icefox/
+├── assets/              # 静态资源
+│   ├── css/             # 样式文件
+│   ├── js/              # JavaScript 脚本
+│   ├── fonts/           # 字体文件
+│   └── images/          # 图片资源
+├── components/          # 组件目录
+│   ├── modals/          # 模态框组件
+│   ├── post/            # 文章相关组件
+│   └── svgs/            # SVG 图标
+├── core/                # 核心工具函数
+├── index.php            # 首页模板
+├── header.php           # 头部模板
+├── footer.php           # 底部模板
+├── post.php             # 文章详情页
+├── page.php             # 独立页面
+├── archive.php          # 归档页
+├── functions.php        # 主题函数库
+└── comment_function.php # 评论函数
+```
+
+## 🎯 使用说明
+
+### 音乐卡片短代码
+
+在文章中插入音乐播放器：
+```
+[music title="歌曲名" artist="歌手" cover="封面图URL" src="音频URL"]
+```
+
+### 自定义样式
+
+主题支持通过后台 "自定义 CSS" 添加样式，或直接编辑 `assets/css/icefox.css`
+
+### 主题切换
+
+用户可通过页面右上角的图标切换日间/夜间模式，设置会自动保存到 localStorage
+
+## 🛠️ 开发指南
+
+### 修改主题样式
+编辑 `assets/css/icefox.css` 或在后台添加自定义 CSS
+
+### 添加新功能
+1. **主题功能**: 在 `functions.php` 中添加
+2. **前端交互**: 在 `assets/js/icefox.js` 中添加
+3. **API 接口**: 在插件的 `Action.php` 中添加
+
+### 数据库查询
+使用 Typecho 的数据库 API：
+```php
+$db = Typecho_Db::get();
+$posts = $db->fetchAll(
+    $db->select()
+       ->from('table.contents')
+       ->where('status = ?', 'publish')
+);
+```
+
+## 🔌 API 接口
+
+所有接口通过 `/action/icefox?do={action}` 访问：
+
+| 接口 | 方法 | 说明 |
+|------|------|------|
+| `do=getLikes` | GET | 获取文章点赞数据 |
+| `do=like` | POST | 切换点赞状态 |
+| `do=addComment` | POST | 添加评论 |
+| `do=getFriendLinks` | GET | 获取友情链接 |
+
+## ⚙️ 配置要求
+
+### PHP 扩展
+- PDO
+- mbstring
+- json
+
+### 数据库
+- 支持外键约束
+- InnoDB 引擎
+
+## 🐛 常见问题
+
+### 点赞/评论功能不工作
+请确保已安装并启用 `icefox` 插件
+
+### 无限滚动不生效
+检查 `assets/js/icefox.js` 是否正确加载
+
+### 样式错乱
+清除浏览器缓存，确保 `assets/css/` 目录下的文件完整
+
+## 📄 许可证
+
+本项目采用 GPL-3.0 许可证 - 详见 [LICENSE](LICENSE) 文件
+
+## 👤 作者
+
+**小胖脸**
+- 网站: [https://xiaopanglian.com](https://xiaopanglian.com)
+
+## 🙏 致谢
+
+- [Typecho](http://typecho.org/) - 优秀的博客平台
+- [Bulma](https://bulma.io/) - 现代化 CSS 框架
+- [Alpine.js](https://alpinejs.dev/) - 轻量级响应式框架
+
+## 📝 更新日志
+
+### v3.0.0 (2024)
+- ✨ 全新设计的 UI 界面
+- ✨ 新增点赞系统
+- ✨ 优化评论交互
+- ✨ 新增音乐卡片功能
+- ✨ 新增游戏页面
+- 🐛 修复若干已知问题
+
+---
+
+如有问题或建议，欢迎提交 [Issue](https://github.com/yourusername/icefox/issues) 或 [Pull Request](https://github.com/yourusername/icefox/pulls)
