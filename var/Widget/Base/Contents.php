@@ -609,6 +609,9 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
      */
     protected function ___path(): string
     {
+        if (empty($this->type) || !is_string($this->type)) {
+            return '#';
+        }
         return Router::url($this->type, $this);
     }
 
