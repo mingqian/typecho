@@ -46,7 +46,9 @@
 <section class="header-container" style="<?php
     // 优先级: 背景视频 > 背景图片 > 默认颜色
     if (empty($this->options->topVideo) && empty($this->options->topImage)) {
-        echo 'background-color: #f1f1f1;';
+        // echo 'background-color: #f1f1f1;';
+        echo 'background-image: url(' . htmlspecialchars($this->options->themeUrl . 
+        '/assets/images/header-bg.jpg', ENT_QUOTES, 'UTF-8') . ');';
     } elseif (empty($this->options->topVideo) && !empty($this->options->topImage)) {
         echo 'background-image: url(' . htmlspecialchars($this->options->topImage, ENT_QUOTES, 'UTF-8') . ');';
     }
