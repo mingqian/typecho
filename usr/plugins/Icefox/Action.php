@@ -618,12 +618,6 @@ class Action extends Widget implements ActionInterface {
      */
     private function handleMediaUpload() {
         $uploadedFiles = [];
-        $uploadDir = __TYPECHO_ROOT_DIR__ . '/usr/uploads/' . date('Y/m/');
-
-        // 确保上传目录存在
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
-        }
 
         foreach ($_FILES as $key => $file) {
             if (strpos($key, 'media_') !== 0 || $file['error'] !== UPLOAD_ERR_OK) {
@@ -644,16 +638,35 @@ class Action extends Widget implements ActionInterface {
                 continue;
             }
 
-            // 生成文件名
+            $isVideo = strpos($mimeType, 'video/') === 0;
+
+            // 优先使用 Vercel Blob（如果插件已安装并配置）
+            if (class_exists('\TypechoPlugin\VercelBlob\Plugin')) {
+                $blobResult = \TypechoPlugin\VercelBlob\Plugin::blobUpload($file);
+                if ($blobResult) {
+                    $uploadedFiles[] = [
+                        'name' => $blobResult['name'],
+                        'path' => $blobResult['url'],   // 完整 Blob URL，用于 Markdown
+                        'type' => $isVideo ? 'video' : 'image',
+                        'mime' => $blobResult['mime'],
+                        'size' => $blobResult['size']
+                    ];
+                    continue;
+                }
+            }
+
+            // 回退：本地文件系统
+            $uploadDir = __TYPECHO_ROOT_DIR__ . '/usr/uploads/' . date('Y/m/');
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
             $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
             $newFileName = uniqid('icefox_') . '_' . time() . '.' . $extension;
             $targetPath = $uploadDir . $newFileName;
 
-            // 移动文件
             if (move_uploaded_file($file['tmp_name'], $targetPath)) {
-                $isVideo = strpos($mimeType, 'video/') === 0;
                 $relativePath = '/usr/uploads/' . date('Y/m/') . $newFileName;
-
                 $uploadedFiles[] = [
                     'name' => $file['name'],
                     'path' => $relativePath,
