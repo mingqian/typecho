@@ -158,7 +158,6 @@ $this->need('header.php');
 
     <?php $this->need('components/modals/setting.php'); ?>
     <?php $this->need('components/modals/login.php'); ?>
-    <?php $this->need('components/modals/links.php'); ?>
 </main>
 
 <?php $this->need('footer.php'); ?>
