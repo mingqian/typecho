@@ -187,7 +187,9 @@ class Plugin implements PluginInterface
             CURLOPT_POSTFIELDS     => $body,
             CURLOPT_HTTPHEADER     => [
                 'Authorization: Bearer ' . $token,
-                'x-api-version: 2023-01-01',
+                'x-api-version: 1',
+                'x-add-random-suffix: 1',
+                'x-access: public',
                 'x-content-type: ' . $mime,
                 'x-content-disposition: inline; filename="' . addcslashes($name, '"\\') . '"',
                 'x-cache-control-max-age: 31536000',

@@ -641,8 +641,11 @@ class Action extends Widget implements ActionInterface {
             $isVideo = strpos($mimeType, 'video/') === 0;
 
             // 优先使用 Vercel Blob（如果插件已安装并配置）
-            if (class_exists('\TypechoPlugin\VercelBlob\Plugin')) {
+            $blobInstalled = class_exists('\TypechoPlugin\VercelBlob\Plugin');
+            // error_log('[Icefox:upload] VercelBlob installed: ' . ($blobInstalled ? 'YES' : 'NO'));
+            if ($blobInstalled) {
                 $blobResult = \TypechoPlugin\VercelBlob\Plugin::blobUpload($file);
+                error_log('[Icefox:upload] Blob upload result: ' . ($blobResult ? 'SUCCESS' : 'FAILED'));
                 if ($blobResult) {
                     $uploadedFiles[] = [
                         'name' => $blobResult['name'],
@@ -651,14 +654,18 @@ class Action extends Widget implements ActionInterface {
                         'mime' => $blobResult['mime'],
                         'size' => $blobResult['size']
                     ];
-                    continue;
                 }
+                continue;  // Blob 已接管上传，不再回退到本地文件系统
             }
 
             // 回退：本地文件系统
             $uploadDir = __TYPECHO_ROOT_DIR__ . '/usr/uploads/' . date('Y/m/');
             if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0755, true);
+                $mkResult = @mkdir($uploadDir, 0755, true);
+                if (!$mkResult) {
+                    // 无法创建上传目录（如只读文件系统），跳过此文件
+                    continue;
+                }
             }
 
             $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
